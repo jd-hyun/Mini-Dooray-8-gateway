@@ -4,9 +4,20 @@
     <meta charset="UTF-8">
     <title>Mini Dooray</title>
     <th:block th:replace="~{components/commons :: bootstrap}" />
+    <script th:inline="javascript">
+        const activateForm = () => {
+            const form = document.querySelector("form#addForm");
+            form.style.display = 'block';
+        }
+    </script>
 </head>
 <body>
 <div class="container">
+    <button class="btn btn-primary" onclick="activateForm()"> + </button>
+    <form id="addForm" style="display: none;" action="/project/create" method="post">
+        <input class="form-control form-control-sm mb-3" style="display: none;" th:value="${#authorization.getAuthentication().getName()}" name="title"/>
+        <button class="btn btn-primary">추가</button>
+    </form>
     <th:block th:each="project : ${projectList}">
         <div th:replace="~{components/commons :: project_cell(project=${project})}"></div>
     </th:block>
