@@ -1,7 +1,9 @@
 package com.nhnacademy.minidooray.controller;
 
+import com.nhnacademy.minidooray.annotation.RedirectOnException;
 import com.nhnacademy.minidooray.model.front.AccountCreateRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -26,6 +28,7 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
+    @RedirectOnException(exceptions = {ValidationException.class}, value = "/register")
     public String createAccount(@RequestParam @Valid AccountCreateRequest createRequest) {
         createRequest.setPassword(passwordEncoder.encode(createRequest.getPassword()));
         HttpEntity<AccountCreateRequest> entity = new HttpEntity<>(createRequest, null);
