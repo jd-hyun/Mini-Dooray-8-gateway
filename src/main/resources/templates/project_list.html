@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mini Dooray</title>
+    <th:block th:replace="~{components/commons :: bootstrap}" />
+</head>
+<body>
+<div class="container">
+    <th:block th:each="project : ${projectList}">
+        <div th:replace="~{components/commons :: project_cell(project)}"></div>
+    </th:block>
+</div>
+</body>
+</html>
