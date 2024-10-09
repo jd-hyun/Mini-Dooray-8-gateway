@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,8 +29,9 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    @RedirectOnException(exceptions = {ValidationException.class}, value = "/register")
-    public String createAccount(@RequestParam @Valid AccountCreateRequest createRequest) {
+    // @Valid 는 controller 로 진입전에 평가하므로 Aspect advice가 작동하지 않음.
+//    @RedirectOnException(exceptions = {MethodArgumentNotValidException.class}, value = "/register")
+    public String createAccount(@Valid AccountCreateRequest createRequest) {
         createRequest.setPassword(passwordEncoder.encode(createRequest.getPassword()));
         HttpEntity<AccountCreateRequest> entity = new HttpEntity<>(createRequest, null);
 
