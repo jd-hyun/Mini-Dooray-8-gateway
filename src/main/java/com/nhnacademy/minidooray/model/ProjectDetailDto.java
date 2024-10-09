@@ -10,10 +10,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectDetailDto {
+    private long id;
     private String title;
     private List<Member> members;
+
+    private String authorId;
+
     private List<Task> tasks;
     private State state;
-    private List<String> tags;
-    private Milestone milestone;
 }

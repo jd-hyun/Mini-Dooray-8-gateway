@@ -8,7 +8,7 @@
 <body>
 <div class="container">
     <th:block th:each="project : ${projectList}">
-        <div th:replace="~{components/commons :: project_cell(project)}"></div>
+        <div th:replace="~{components/commons :: project_cell(project=${project})}"></div>
     </th:block>
 </div>
 </body>

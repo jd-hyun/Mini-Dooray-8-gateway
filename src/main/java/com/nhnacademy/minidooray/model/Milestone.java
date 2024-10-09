@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class Milestone {
+    private long id;
     private String title;
     private LocalDate startDate;
     private LocalDate endDate;

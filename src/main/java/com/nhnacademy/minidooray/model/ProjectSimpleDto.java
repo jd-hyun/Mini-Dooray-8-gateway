@@ -10,8 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectSimpleDto {
+    private long id;
     private String title;
     private State state;
-    private List<String> tags;
-    private Milestone milestone;
+    private long authorId;
 }
