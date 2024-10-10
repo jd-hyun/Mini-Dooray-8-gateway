@@ -1,6 +1,42 @@
 spring:
   application:
     name: minidooray-gateway
+  profiles:
+    active: dev
 
 server:
   port: 8080
+
+dooray:
+  account:
+    host: account
+    port: 8081
+  task:
+    host: task
+    port: 8082
+
+redis:
+  host: redis
+  port: 6379
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+dooray:
+  account:
+    host: localhost
+    port: 8082
+  task:
+    host: localhost
+    port: 8082
+
+redis:
+  host: localhost
+  port: 6379
+
+logging:
+  level:
+    com.nhnacademy.minidooray: trace

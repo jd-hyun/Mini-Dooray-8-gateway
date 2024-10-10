@@ -6,9 +6,9 @@
     <th:block th:replace="~{components/commons :: bootstrap}"></th:block>
 </head>
 <body>
-<th:block th:replace="~{components/commons :: header}"></th:block>
+<th:block th:replace="~{components/commons :: header('')}"></th:block>
 <div class="container d-flex">
-    <form style="width: 50%;" class="mt-3 mx-auto" method="post">
+    <form style="width: 50%;" class="mt-3 mx-auto" method="post" action="/login/process">
         <div>
             <input id="loginInput" name="id" class="form-control form-control-lg mb-3" type="text" placeholder="ID" />
             <input id="passwordInput" name="password" class="form-control form-control-lg mb-3" type="password" placeholder="Password" />

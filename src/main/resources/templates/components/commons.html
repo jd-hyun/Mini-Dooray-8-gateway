@@ -5,6 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script>
+        window.close();
+    </script>
     <th:block th:fragment="bootstrap">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -41,6 +44,23 @@
             div.project-cell a:hover{
                 color: gray;
                 text-decoration-line: underline;
+            }
+            div.member-card {
+                border-bottom: 1px solid gray;
+            }
+            div.member-card:last-child {
+                border-bottom: none;
+            }
+            div.member-card #member-id {
+                font-size: 18px;
+            }
+            div.member-card #member-email {
+                font-size: 12px;
+                color: dimgrey;
+            }
+            div.task-card .task-title {
+                font-size: 0.8rem;
+                color: gray;
             }
         </style>
     </th:block>
@@ -81,6 +101,21 @@ Project {
         <div class="project-author mb-2" th:text="${project.authorId}"></div>
         <div th:class="|project-state project-state-${project.state}|" th:text="${project.state}"></div>
     </div>
+</div>
+
+<div th:fragment="member_card(member)" class="d-flex member-card py-2 px-4 flex-column">
+    <div class="mb-2" id="member-id" th:text="${member.id}"></div>
+    <div id="member-email" th:text="${member.email}"></div>
+</div>
+
+<div th:fragment="task_card(task)" class="d-flex task-card py-2 px-4 flex-column">
+    <div class="d-flex">
+        <div class="task-title me-auto" th:text="${#strings.listJoin(task.tags, '/')}"></div>
+<!--        <div th:text="${task.}"></div>-->
+    </div>
+    <div class="mb-2"><h3 class="m-0" th:text="${task.title}"></h3></div>
+    <div th:text="${task.milestone.title}"></div>
+    <div>[[${task.milestone.startDate}]] ~ [[${task.milestone.endDate}]]</div>
 </div>
 </body>
 </html>

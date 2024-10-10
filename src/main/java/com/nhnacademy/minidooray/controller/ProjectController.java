@@ -1,11 +1,11 @@
-package com.nhnacademy.minidooray.config;
+package com.nhnacademy.minidooray.controller;
 
-import com.nhnacademy.minidooray.model.Member;
 import com.nhnacademy.minidooray.model.ProjectDetailDto;
 import com.nhnacademy.minidooray.model.ProjectSimpleDto;
 import com.nhnacademy.minidooray.util.RestUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -24,16 +24,23 @@ import java.util.List;
 @Slf4j
 @Controller
 public class ProjectController {
-    private final RestTemplate restTemplate;
+    @Value("${dooray.task.host}")
+    private String host;
+
+    @Value("${dooray.task.port}")
+    private int port;
+
+    private static final String REQUEST_FORMAT = "http://%s:%d/%s";
 
     private final ParameterizedTypeReference<List<ProjectSimpleDto>> reference = new ParameterizedTypeReference<List<ProjectSimpleDto>>() {};
 
+    // TODO: Project Service로 리팩토링하기
     @GetMapping
     public String getProjectList(/* UserDetails User */ Model model) {
         // TODO: MEMBER ID
         final String memberId = "123";
         ResponseEntity<List<ProjectSimpleDto>> resp = RestUtil.doRest(
-                "http://localhost:8082/api/project?memberId="+memberId,
+                "http://localhost:8082/api/projects?memberId="+memberId,
                 HttpMethod.GET,
                 null,
                 reference
@@ -43,9 +50,9 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}")
-    public String getProjectPage(UserDetails user, @PathVariable String projectId, Model model) {
-        ResponseEntity<ProjectDetailDto> resp = restTemplate.exchange(
-                "http://localhost:8082/api/project/"+projectId,
+    public String getProjectPage(/*UserDetails user, */@PathVariable String projectId, Model model) {
+        ResponseEntity<ProjectDetailDto> resp = RestUtil.doRest(
+                String.format(REQUEST_FORMAT, host, port, "/api/projects/"+projectId),
                 HttpMethod.GET,
                 null,
                 ProjectDetailDto.class
@@ -54,11 +61,13 @@ public class ProjectController {
             return "redirect:/";
         }
         ProjectDetailDto detail =  resp.getBody();
-        String username = user.getUsername();
-        boolean isMember = detail.getMembers().stream().anyMatch(member -> member.getId().equals(username));
+//        String username = user.getUsername();
+//        boolean isMember = detail.getMembers().stream().anyMatch(member -> member.getId().equals(username));
 
-        if (detail.getAuthorId().equals(username) || isMember) {
-            model.addAllAttributes(detail.toModelMap());
+//        if (detail.getAuthorId().equals(username) || isMember) {
+        if (true) {
+            model.addAttribute("project", detail);
+//            model.addAllAttributes(detail.toModelMap());
             return "project/project_detail";
         } else {
             // TODO: 예외처리

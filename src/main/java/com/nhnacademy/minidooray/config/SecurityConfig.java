@@ -1,6 +1,7 @@
 package com.nhnacademy.minidooray.config;
 
 import com.nhnacademy.minidooray.service.CustomUserDetailService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,11 +36,11 @@ public class SecurityConfig {
 
         // login
         http.formLogin(formLogin -> {
-            formLogin.disable()
-//            formLogin.loginPage("/login")
-//                    .usernameParameter("id")
-//                    .passwordParameter("pwd")
-//                    .loginProcessingUrl("/login/process")
+//            formLogin.disable()
+            formLogin.loginPage("/login")
+                    .usernameParameter("id")
+                    .passwordParameter("password")
+                    .loginProcessingUrl("/login/process")
 //                    .successHandler(new LoginSuccessHandler(redisTemplate))
 //                    .failureHandler(new LoginFailureHandler())
             ;

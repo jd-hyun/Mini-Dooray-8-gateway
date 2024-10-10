@@ -2,9 +2,40 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="${project.title}"></title>
+    <th:block th:replace="~{components/commons :: bootstrap}" />
+    <style>
+        a.task-card-wrapper{
+            color: black;
+            text-decoration: none;
+        }
+        li.task-card-li:hover {
+            background-color: #ebebeb;
+        }
+    </style>
 </head>
 <body>
-
+<div class="d-flex flex-column" style="height: 100vh;">
+<th:block th:replace="~{components/commons :: header(${project.title})}" />
+    <div class="container d-flex py-3 flex-row flex-grow-1">
+        <div id="memberList" class="d-flex flex-column w-25 pe-3">
+            <button type="button" class="btn btn-primary">+</button>
+            <div class="d-flex flex-column">
+                <th:block th:each="member : ${project.members}">
+                    <div th:replace="~{components/commons :: member_card(${member})}"></div>
+                </th:block>
+            </div>
+        </div>
+        <div id="taskList" style="border-left: 2px solid black;" class="h-100 p-2 flex-grow-1">
+            <ul class="list-group" th:each="task : ${project.tasks}">
+                <li class="me-2 list-group-item task-card-li m-1">
+                    <a class="task-card-wrapper" th:href="@{/project/{pid}/task/{tid}(pid=${project.id}, tid=${task.id})}">
+                        <th:block th:replace="~{components/commons :: task_card(${task})}" />
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 </body>
 </html>
