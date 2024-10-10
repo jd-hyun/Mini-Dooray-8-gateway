@@ -13,35 +13,47 @@
                 font-weight: bold;
                 font-size: 1rem;
             }
-            .project-active{
-                color: #519231;
+            .project-state{
+                text-align: end;
             }
-            .project-sleep{
+            .project-state-ACTIVE{
+                color: limegreen;
+            }
+            .project-state-SLEEP{
                 color: #98a42c;
             }
-            .project-terminated{
+            .project-state-TERMINATED{
                 color: red;
             }
             .project-title {
-                font-size: 2.4rem;
+                font-size: 2rem;
             }
             div.project-cell {
-                width: 500px;
+                /*width: 500px;*/
+                background-color: rgba(11,226,0,0.12);
+                border: 2px gray solid;
+                margin: 6px 0;
+            }
+            div.project-cell a {
+                text-decoration-line: none;
+                color: black;
+            }
+            div.project-cell a:hover{
+                color: gray;
+                text-decoration-line: underline;
             }
         </style>
     </th:block>
 </head>
 <body>
-<nav th:fragment="header" class="navbar navbar-expand-sm navbar-dark" style="background-color: #2fadb3 !important;" >
+<nav th:fragment="header(title)" class="navbar navbar-expand-sm navbar-dark" style="background-color: #2fadb3 !important;" >
     <div class="container-fluid collapse navbar-collapse d-flex me-3">
         <ul class="navbar-nav mb-2">
             <li class="nav-item">
                <a href="/" class="nav-link active">홈</a>
             </li>
         </ul>
-        <h4 class="flex-grow-1" style="text-align: center;">
-            Project Name Here
-        </h4>
+        <h4 class="flex-grow-1" style="text-align: center;" th:text="${title}"></h4>
         <div class="ms-3">
 <!--            <th:block sec:authorization="${isAuthorized()}">-->
                 <a href="/login" class="btn btn-warning">로그인</a>
@@ -57,18 +69,17 @@ Project {
     title: String,  -> 프로젝트 타이틀
     author: String,   -> 프로젝트 만든 사람
     state: Enum<State>, -> 프로젝트 상태
-    tags: List<String> -> 프로젝트 태그
 }
 */ -->
 <div th:fragment="project_cell(project)" class="d-flex flex-row project-cell">
-    <div class="my-2">
+    <div class="me-auto ms-3 d-flex align-items-center">
         <!-- /* 태그1/태그2/.....  */ -->
-        <div class="project-tag mb-1" th:text="${#strings.listJoin(project.tags, '/')}"></div>
-        <div class="project-title " th:text="${project.title}"></div>
+<!--        <div class="project-tag mb-1" th:text="${#strings.listJoin(project.tags, '/')}"></div>-->
+        <a class="project-title" th:href="|/project/${project.id}|" th:text="${project.title}"></a>
     </div>
-    <div class="d-flex flex-column my-2">
-        <div class="project-author mb-2" th:text="${project.author}"></div>
-        <div th:class="|project-state project-${project.state}|" th:text="${project.state}"></div>
+    <div class="d-flex flex-column my-2 me-3">
+        <div class="project-author mb-2" th:text="${project.authorId}"></div>
+        <div th:class="|project-state project-state-${project.state}|" th:text="${project.state}"></div>
     </div>
 </div>
 </body>

@@ -13,5 +13,5 @@ public class ProjectSimpleDto {
     private long id;
     private String title;
     private State state;
-    private long authorId;
+    private String authorId;
 }
