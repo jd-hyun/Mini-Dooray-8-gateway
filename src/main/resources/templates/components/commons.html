@@ -66,14 +66,14 @@
     </th:block>
 </head>
 <body>
-<nav th:fragment="header(title)" class="navbar navbar-expand-sm navbar-dark" style="background-color: #2fadb3 !important;" >
+<nav th:fragment="header(title)" class="navbar navbar-expand-sm navbar-dark" style="background-color: #4b99bd !important;" >
     <div class="container-fluid collapse navbar-collapse d-flex me-3">
         <ul class="navbar-nav mb-2">
             <li class="nav-item">
-               <a href="/" class="nav-link active">홈</a>
+               <a href="/" class="nav-link active" style="color: white;">홈</a>
             </li>
         </ul>
-        <h4 class="flex-grow-1" style="text-align: center;" th:text="${title}"></h4>
+        <h4 class="flex-grow-1" style="text-align: center; color: white;" th:text="${title}"></h4>
         <div class="ms-3">
 <!--            <th:block sec:authorization="${isAuthorized()}">-->
                 <a href="/login" class="btn btn-warning">로그인</a>

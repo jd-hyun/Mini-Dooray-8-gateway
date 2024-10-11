@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>Mini Dooray</title>
     <th:block th:replace="~{components/commons :: bootstrap}" />
+    <style>
+        table#projectTable > tbody > tr {
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
     <script th:inline="javascript">
         const activateForm = () => {
             const form = document.querySelector("form#addForm");
@@ -25,10 +31,40 @@
         </form>
     </div>
     <div>
-        <div th:each="project : ${projectList}">
-            <div th:replace="~{components/commons :: project_cell(project=${project})}"></div>
-        </div>
+        <table class="table table-hover" id="projectTable">
+            <thead>
+            <tr>
+                <th scope="col">프로젝트</th>
+                <th scope="col">개설자</th>
+                <th scope="col">상태</th>
+            </tr>
+            </thead>
+            <tbody th:each="project: ${projectList}">
+            <tr th:data-active="${project.state}" th:data-project-id="${project.id}">
+                <td th:text="${project.title}"></td>
+                <td th:text="${project.authorId}"></td>
+                <td th:text="${project.state.view}"></td>
+            </tr>
+            </tbody>
+        </table>
+<!--        <div th:each="project : ${projectList}">-->
+<!--            <div th:replace="~{components/commons :: project_cell(project=${project})}"></div>-->
+<!--        </div>-->
     </div>
 </div>
+<script>
+    const tableRows = document.querySelectorAll('table#projectTable > tbody > tr');
+    tableRows.forEach(row => {
+        switch(row.getAttribute('data-active')) {
+            case 'ACTIVE': row.classList.add('table-success'); break;
+            case 'SLEEP': row.classList.add('table-info'); break;
+            case 'TERMINATED': row.classList.add('table-secondary'); break;
+        }
+        const projectId = row.getAttribute('data-project-id');
+        row.addEventListener('click', () => {
+            window.location.href=`/project/${projectId}`;
+        });
+    });
+</script>
 </body>
 </html>
