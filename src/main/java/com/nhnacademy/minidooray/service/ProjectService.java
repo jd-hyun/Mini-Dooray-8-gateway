@@ -1,14 +1,19 @@
 package com.nhnacademy.minidooray.service;
 
+import com.nhnacademy.minidooray.exception.CreationFailedException;
+import com.nhnacademy.minidooray.exception.EntityAlreadyExistsException;
 import com.nhnacademy.minidooray.exception.EntityNotExistsException;
 import com.nhnacademy.minidooray.model.ProjectDetailDto;
 import com.nhnacademy.minidooray.model.ProjectSimpleDto;
+import com.nhnacademy.minidooray.model.rest.project.ProjectCreateRequest;
+import com.nhnacademy.minidooray.model.rest.project.ProjectUpdateRequest;
 import com.nhnacademy.minidooray.util.RestUtil;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponents;
@@ -54,6 +59,48 @@ public class ProjectService {
         if (!resp.getStatusCode().is2xxSuccessful()) {
             throw new EntityNotExistsException("That project does not exist.");
         }
+
+        return resp.getBody();
+    }
+
+    public void sendCreateProjectRequest(ProjectCreateRequest request) {
+        UriComponents components = builderProvider.getIfAvailable().path("/projects")
+                .encode().build();
+
+        ResponseEntity<HttpStatus> resp = RestUtil.doRest(
+                components.toUriString(),
+                HttpMethod.POST,
+                null,
+                HttpStatus.class
+        );
+
+        if (!resp.getStatusCode().is2xxSuccessful()) {
+            throw new CreationFailedException("Creating project was failed");
+        }
+    }
+
+    public void sendDeleteProjectRequest(long projectId) {
+        UriComponents components = builderProvider.getIfAvailable().path("/projects/{projectId}")
+                .encode().buildAndExpand(projectId);
+
+        ResponseEntity<HttpStatus> resp = RestUtil.doRest(
+                components.toUriString(),
+                HttpMethod.DELETE,
+                null,
+                HttpStatus.class
+        );
+    }
+
+    public ProjectSimpleDto sendUpdateProjectRequest(long projectId, ProjectUpdateRequest request) {
+        UriComponents components = builderProvider.getIfAvailable().path("/projects/{projectId}")
+                .encode().buildAndExpand(projectId);
+
+        ResponseEntity<ProjectSimpleDto> resp = RestUtil.doRest(
+                components.toUriString(),
+                HttpMethod.PUT,
+                request,
+                ProjectSimpleDto.class
+        );
 
         return resp.getBody();
     }

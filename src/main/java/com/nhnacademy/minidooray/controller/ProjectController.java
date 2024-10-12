@@ -2,21 +2,14 @@ package com.nhnacademy.minidooray.controller;
 
 import com.nhnacademy.minidooray.model.ProjectDetailDto;
 import com.nhnacademy.minidooray.model.ProjectSimpleDto;
+import com.nhnacademy.minidooray.model.rest.project.ProjectCreateRequest;
+import com.nhnacademy.minidooray.model.rest.project.ProjectUpdateRequest;
 import com.nhnacademy.minidooray.service.ProjectService;
-import com.nhnacademy.minidooray.util.RestUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import static com.nhnacademy.minidooray.util.RestUtil.REQUEST_FORMAT;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,15 +18,7 @@ import java.util.List;
 @Slf4j
 @Controller
 public class ProjectController {
-    @Value("${dooray.task.host}")
-    private String host;
-
-    @Value("${dooray.task.port}")
-    private int port;
-
     private final ProjectService projectService;
-
-    private final ParameterizedTypeReference<List<ProjectSimpleDto>> reference = new ParameterizedTypeReference<List<ProjectSimpleDto>>() {};
 
     // TODO: Project Service로 리팩토링하기
     @GetMapping
@@ -61,5 +46,23 @@ public class ProjectController {
             // TODO: 예외처리
             return "redirect:/";
         }
+    }
+
+    @PostMapping("/create")
+    public String createProject(@RequestBody ProjectCreateRequest createRequest) {
+        projectService.sendCreateProjectRequest(createRequest);
+        return "redirect:/project";
+    }
+
+    @PostMapping("/modify")
+    public String modifyProject(@RequestParam("pid") long projectId, @RequestBody ProjectUpdateRequest updateRequest) {
+        projectService.sendUpdateProjectRequest(projectId, updateRequest);
+        return "redirect:/project/"+projectId;
+    }
+
+    @GetMapping("/delete")
+    public String deleteProject(@RequestParam("pid") long projectId) {
+        projectService.sendDeleteProjectRequest(projectId);
+        return "redirect:/project";
     }
 }
