@@ -1,7 +1,6 @@
 package com.nhnacademy.minidooray.service;
 
 import com.nhnacademy.minidooray.exception.CreationFailedException;
-import com.nhnacademy.minidooray.exception.EntityAlreadyExistsException;
 import com.nhnacademy.minidooray.exception.EntityNotExistsException;
 import com.nhnacademy.minidooray.model.ProjectDetailDto;
 import com.nhnacademy.minidooray.model.ProjectSimpleDto;
@@ -63,7 +62,7 @@ public class ProjectService {
         return resp.getBody();
     }
 
-    public void sendCreateProjectRequest(ProjectCreateRequest request) {
+    public void sendCreateRequest(ProjectCreateRequest request) {
         UriComponents components = builderProvider.getIfAvailable().path("/projects")
                 .encode().build();
 
@@ -79,7 +78,7 @@ public class ProjectService {
         }
     }
 
-    public void sendDeleteProjectRequest(long projectId) {
+    public void sendDeleteRequest(long projectId) {
         UriComponents components = builderProvider.getIfAvailable().path("/projects/{projectId}")
                 .encode().buildAndExpand(projectId);
 
@@ -91,7 +90,7 @@ public class ProjectService {
         );
     }
 
-    public ProjectSimpleDto sendUpdateProjectRequest(long projectId, ProjectUpdateRequest request) {
+    public ProjectSimpleDto sendUpdateRequest(long projectId, ProjectUpdateRequest request) {
         UriComponents components = builderProvider.getIfAvailable().path("/projects/{projectId}")
                 .encode().buildAndExpand(projectId);
 

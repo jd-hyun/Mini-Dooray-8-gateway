@@ -35,13 +35,16 @@
         <div class="mb-2" th:each="comment: ${task.comments}">
             <div style="border-bottom: 1px solid black;">
                 <div th:text="|작성자: ${comment.authorId}|"></div>
-                <div th:text="|작성 일시: ${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm:ss')}|"></div>
+                <div>
+                    <div th:text="|작성 일시: ${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm:ss')}|"></div>
+                    <a th:href="@{/comment/delete(pid=${task.projectId}, tid=${task.id}, cid=${comment.id})}" class="btn btn-outline-danger">삭제</a>
+                </div>
                 <div th:text="${comment.content}"></div>
             </div>
         </div>
 
 <!--        댓글 등록 폼-->
-        <form class="d-flex flex-column" th:action="@{/comment}" method="post">
+        <form class="d-flex flex-column" th:action="@{/comment/create(pid=${task.projectId}, tid=${task.id})}" method="post">
             <input name="taskId" th:value="${task.id}" hidden />
             <textarea class="mb-2 p-2" style="width: 100%; height: 80px;" placeholder="Comment here..."></textarea>
             <button type="submit" class="ms-auto btn btn-primary">댓글 등록</button>

@@ -50,19 +50,19 @@ public class ProjectController {
 
     @PostMapping("/create")
     public String createProject(@RequestBody ProjectCreateRequest createRequest) {
-        projectService.sendCreateProjectRequest(createRequest);
+        projectService.sendCreateRequest(createRequest);
         return "redirect:/project";
     }
 
     @PostMapping("/modify")
     public String modifyProject(@RequestParam("pid") long projectId, @RequestBody ProjectUpdateRequest updateRequest) {
-        projectService.sendUpdateProjectRequest(projectId, updateRequest);
+        projectService.sendUpdateRequest(projectId, updateRequest);
         return "redirect:/project/"+projectId;
     }
 
     @GetMapping("/delete")
     public String deleteProject(@RequestParam("pid") long projectId) {
-        projectService.sendDeleteProjectRequest(projectId);
+        projectService.sendDeleteRequest(projectId);
         return "redirect:/project";
     }
 }
