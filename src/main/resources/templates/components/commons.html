@@ -58,7 +58,7 @@
                 font-size: 12px;
                 color: dimgrey;
             }
-            div.task-card .task-title {
+            .task-tags{
                 font-size: 0.8rem;
                 color: gray;
             }
@@ -110,7 +110,7 @@ Project {
 
 <div th:fragment="task_card(task)" class="d-flex task-card py-2 px-4 flex-column">
     <div class="d-flex">
-        <div class="task-title me-auto" th:text="${#strings.listJoin(task.tags, '/')}"></div>
+        <div class="task-tags me-auto" th:text="${#strings.listJoin(task.tags, ' / ')}"></div>
 <!--        <div th:text="${task.}"></div>-->
     </div>
     <div class="mb-2"><h3 class="m-0" th:text="${task.title}"></h3></div>

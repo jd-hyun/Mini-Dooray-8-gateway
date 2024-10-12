@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
+import static com.nhnacademy.minidooray.util.RestUtil.REQUEST_FORMAT;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -29,8 +31,6 @@ public class ProjectController {
 
     @Value("${dooray.task.port}")
     private int port;
-
-    private static final String REQUEST_FORMAT = "http://%s:%d/%s";
 
     private final ParameterizedTypeReference<List<ProjectSimpleDto>> reference = new ParameterizedTypeReference<List<ProjectSimpleDto>>() {};
 

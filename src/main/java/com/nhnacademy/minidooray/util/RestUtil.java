@@ -13,6 +13,7 @@ import java.util.Objects;
 
 @Slf4j
 public class RestUtil {
+    public static final String REQUEST_FORMAT = "http://%s:%d/%s";
     private static final Level LOG_LEVEL = Level.TRACE;
     private static final RestTemplate restTemplate = new RestTemplate();
     static {
