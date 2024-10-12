@@ -2,7 +2,9 @@ package com.nhnacademy.minidooray.controller;
 
 import com.nhnacademy.minidooray.model.ProjectDetailDto;
 import com.nhnacademy.minidooray.model.rest.task.TaskResponseDto;
+import com.nhnacademy.minidooray.service.TaskService;
 import com.nhnacademy.minidooray.util.RestUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
+@RequiredArgsConstructor
 @RequestMapping("/task")
 @Controller
 public class TaskController {
@@ -26,19 +29,11 @@ public class TaskController {
     @Autowired
     private ObjectProvider<UriComponentsBuilder> builderProvider;
 
+    private final TaskService taskService;
+
     @GetMapping("/{taskId}")
     public ModelAndView getTaskInfo(/* UserDetail user */ @PathVariable long taskId, @RequestParam long pid) {
-        UriComponentsBuilder builder = builderProvider.getIfAvailable();
-        log.trace("{}", System.identityHashCode(builder));
-        UriComponents components = builder.path("/projects/{projectId}/tasks/{taskId}")
-                .encode().buildAndExpand(pid, taskId);
-
-        ResponseEntity<TaskResponseDto> resp = RestUtil.doRest(
-                components.toUriString(),
-                HttpMethod.GET,
-                null,
-                TaskResponseDto.class
-        );
+        TaskResponseDto taskResponse = taskService.getTaskDetail(pid, taskId);
 
         UriComponentsBuilder projectBuilder = builderProvider.getIfAvailable();
         UriComponents projectComponent  = projectBuilder.path("/projects/{projectId}")
@@ -52,7 +47,7 @@ public class TaskController {
         );
 
         ModelAndView mv = new ModelAndView("task/task_detail");
-        mv.addObject("task", resp.getBody());
+        mv.addObject("task", taskResponse);
         mv.addObject("project", projectResp.getBody());
         mv.addObject("ls", System.lineSeparator());
 

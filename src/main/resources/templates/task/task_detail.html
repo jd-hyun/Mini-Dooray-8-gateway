@@ -34,8 +34,8 @@
 <!--        태스트 댓글-->
         <div class="mb-2" th:each="comment: ${task.comments}">
             <div style="border-bottom: 1px solid black;">
-                <div th:text="${comment.authorId}"></div>
-                <div th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></div>
+                <div th:text="|작성자: ${comment.authorId}|"></div>
+                <div th:text="|작성 일시: ${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm:ss')}|"></div>
                 <div th:text="${comment.content}"></div>
             </div>
         </div>
