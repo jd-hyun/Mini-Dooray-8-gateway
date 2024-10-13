@@ -6,5 +6,5 @@ import lombok.Getter;
 @Data
 public class Member {
     private String id;
-    private String email;
+//    private String email;
 }

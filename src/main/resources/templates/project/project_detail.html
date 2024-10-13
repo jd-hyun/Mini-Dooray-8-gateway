@@ -36,6 +36,7 @@
 <!--                <a href="#" class="list-group-item list-group-item-action">멤버 추가(공사중)</a>-->
 
             </div>
+            <div style="text-align:center; background-color: skyblue; color: white;">멤버 리스트</div>
             <div class="d-flex flex-column">
                 <th:block th:each="member : ${project.members}">
                     <div th:replace="~{components/commons :: member_card(${member})}"></div>
@@ -91,6 +92,7 @@
                                 copyMemberCardDOM.appendChild(copyEmailDOM);
 
                                 copyMemberCardDOM.addEventListener('click', () => {
+                                    fetch()
                                     alert('멤버 추가 미구현');
                                     window.location.href='/project/' + [[${project.id}]];
                                 })
