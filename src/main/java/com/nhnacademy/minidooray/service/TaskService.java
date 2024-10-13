@@ -1,11 +1,13 @@
 package com.nhnacademy.minidooray.service;
 
+import com.nhnacademy.minidooray.model.rest.task.TaskCreateRequest;
 import com.nhnacademy.minidooray.model.rest.task.TaskResponseDto;
 import com.nhnacademy.minidooray.util.RestUtil;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponents;
@@ -30,5 +32,17 @@ public class TaskService {
         );
 
         return resp.getBody();
+    }
+    public void sendCreateRequest(long projectId, TaskCreateRequest request) {
+        UriComponentsBuilder builder = builderProvider.getIfAvailable();
+        UriComponents components = builder.path("/projects/{projectId}/tasks")
+                .encode().buildAndExpand(projectId);
+
+        ResponseEntity<HttpStatus> resp = RestUtil.doRest(
+                components.toUriString(),
+                HttpMethod.POST,
+                request,
+                HttpStatus.class
+        );
     }
 }

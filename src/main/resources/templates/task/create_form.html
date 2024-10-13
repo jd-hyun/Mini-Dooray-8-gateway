@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Task</title>
+    <th:block th:replace="~{components/commons :: bootstrap}" />
+</head>
+<body>
+<th:block th:replace="~{components/commons :: header(${project.title})}" />
+<div class="container">
+    <div>
+        <h3 class="display-4 mb-3">Create Task</h3>
+        <form method="post" class="d-flex flex-column" th:action="@{/task/create(pid=${project.id})}">
+            <input class="form-control form-control-sm flex-grow-1 me-3 mb-3" name="title" placeholder="Title Here..."/>
+            <textarea class="form-control w-100 p-2 mb-3" name="contents" placeholder="Contents here..." rows="10"></textarea>
+            <select class="form-select form-select-lg mb-3" name="milestoneId">
+                <th:block th:each="milestone: ${milestones}">
+                    <option th:value="${milestone.id}" th:text="${milestone.title}"></option>
+                </th:block>
+            </select>
+            <button type="submit" class="btn btn-primary ms-auto">할일 생성</button>
+        </form>
+    </div>
+</div>
+</body>
+<th:block th:replace="~{components/commons :: bootstrap_script}" />
+</html>

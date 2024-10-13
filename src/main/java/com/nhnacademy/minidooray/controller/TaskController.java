@@ -1,56 +1,58 @@
 package com.nhnacademy.minidooray.controller;
 
+import com.nhnacademy.minidooray.model.Milestone;
 import com.nhnacademy.minidooray.model.ProjectDetailDto;
+import com.nhnacademy.minidooray.model.rest.task.TaskCreateRequest;
 import com.nhnacademy.minidooray.model.rest.task.TaskResponseDto;
+import com.nhnacademy.minidooray.service.MilestoneService;
+import com.nhnacademy.minidooray.service.ProjectService;
 import com.nhnacademy.minidooray.service.TaskService;
-import com.nhnacademy.minidooray.util.RestUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/task")
 @Controller
 public class TaskController {
-    @Qualifier("taskRequestBuilder")
-    @Autowired
-    private ObjectProvider<UriComponentsBuilder> builderProvider;
-
     private final TaskService taskService;
+    private final ProjectService projectService;
+    private final MilestoneService milestoneService;
 
     @GetMapping("/{taskId}")
-    public ModelAndView getTaskInfo(/* UserDetail user */ @PathVariable long taskId, @RequestParam long pid) {
+    public ModelAndView getTaskInfo( @PathVariable long taskId, @RequestParam long pid) {
         TaskResponseDto taskResponse = taskService.getTaskDetail(pid, taskId);
 
-        UriComponentsBuilder projectBuilder = builderProvider.getIfAvailable();
-        UriComponents projectComponent  = projectBuilder.path("/projects/{projectId}")
-                .encode().buildAndExpand(pid);
-
-        ResponseEntity<ProjectDetailDto> projectResp = RestUtil.doRest(
-                projectComponent.toUriString(),
-                HttpMethod.GET,
-                null,
-                ProjectDetailDto.class
-        );
+        ProjectDetailDto projectDetail = projectService.getProjectDetailById(pid);
 
         ModelAndView mv = new ModelAndView("task/task_detail");
         mv.addObject("task", taskResponse);
-        mv.addObject("project", projectResp.getBody());
+        mv.addObject("project", projectDetail);
         mv.addObject("ls", System.lineSeparator());
 
         return mv;
+    }
+
+    @GetMapping("/create")
+    public ModelAndView createForm(@RequestParam("pid") long projectId) {
+        ModelAndView mv = new ModelAndView("task/create_form");
+        ProjectDetailDto projectDetail = projectService.getProjectDetailById(projectId);
+
+        List<Milestone> milestones = milestoneService.findMilestonesByProjectId(projectId);
+
+        mv.addObject("milestones", milestones);
+        mv.addObject("project", projectDetail);
+        return mv;
+    }
+
+    @PostMapping("/create")
+    public String createTask(@RequestParam("pid") long projectId, TaskCreateRequest createRequest) {
+        taskService.sendCreateRequest(projectId, createRequest);
+        return "redirect:/project/"+projectId;
     }
 }
