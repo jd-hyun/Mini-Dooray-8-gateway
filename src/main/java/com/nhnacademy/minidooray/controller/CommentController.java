@@ -14,6 +14,7 @@ public class CommentController {
 
     @PostMapping("/create")
     public String createComment(
+            /* UserDetail user, */
             @RequestParam("pid") long projectId, @RequestParam("tid") long taskId, @ModelAttribute CommentCreateRequest createRequest) {
         commentService.sendCreateRequest(projectId, taskId, createRequest);
         return "redirect:/task/" + taskId + "?pid=" + projectId;

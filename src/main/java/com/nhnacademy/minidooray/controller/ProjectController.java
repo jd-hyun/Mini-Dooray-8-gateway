@@ -49,7 +49,7 @@ public class ProjectController {
     }
 
     @PostMapping("/create")
-    public String createProject(@RequestBody ProjectCreateRequest createRequest) {
+    public String createProject(ProjectCreateRequest createRequest) {
         projectService.sendCreateRequest(createRequest);
         return "redirect:/project";
     }

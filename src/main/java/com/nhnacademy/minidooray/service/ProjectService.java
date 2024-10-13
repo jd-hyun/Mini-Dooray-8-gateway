@@ -69,7 +69,7 @@ public class ProjectService {
         ResponseEntity<HttpStatus> resp = RestUtil.doRest(
                 components.toUriString(),
                 HttpMethod.POST,
-                null,
+                request,
                 HttpStatus.class
         );
 

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Milestone</title>
+    <th:block th:replace="~{components/commons :: bootstrap}" />
+</head>
+<body>
+<th:block th:replace="~{components/commons :: header(${project.title})}" />
+<div class="container p-3">
+    <h3 class="display-4 mb-3">Milestone List</h3>
+    <hr />
+    <form class="d-flex mb-3" th:action="@{/project/{pid}/milestone(pid=${project.id})}" method="post">
+        <input name="title" class="form-control form-control-sm me-2" />
+        <input name="startDate" type="date" th:value="${#temporals.createToday()}" class="me-2"/>
+        <span> ~ </span>
+        <input name="endDate" type="date" class="ms-2 me-2"/>
+        <button class="btn btn-primary ms-auto">+</button>
+    </form>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">마일스톤 내용</th>
+            <th scope="col">시작 날짜</th>
+            <th scope="col">종료 날짜</th>
+            <th scope="col">편집</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="milestone : ${milestones}">
+            <td th:text="${milestone.title}"></td>
+            <td th:text="${#temporals.format(milestone.startDate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${#temporals.format(milestone.endDate, 'yyyy-MM-dd')}"></td>
+            <td><a th:href="@{/milestone/delete(mid=${milestone.id})}" class="btn btn-outline-warning">삭제</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

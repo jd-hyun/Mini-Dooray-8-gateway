@@ -30,7 +30,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        String url = String.format("http://%s:%d/api/account/%s", host, port, username);
+        String url = String.format("http://%s:%d/api/accounts/%s", host, port, username);
         log.trace("Try to Login... Formatted url: {}", url);
         ResponseEntity<AccountResponse> resp = restTemplate.exchange(
                 url,

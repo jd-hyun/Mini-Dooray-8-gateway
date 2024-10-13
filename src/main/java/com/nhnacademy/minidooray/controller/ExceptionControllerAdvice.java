@@ -3,6 +3,7 @@ package com.nhnacademy.minidooray.controller;
 import com.nhnacademy.minidooray.exception.RedirectRuntimeException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -49,4 +50,11 @@ public class ExceptionControllerAdvice {
     public void nullPointer(NullPointerException e) {
         log.error("NullPointerException thrown: ", e);
     }
+
+    // AOP 에 걸어야 할듯
+//    @ExceptionHandler({RedisConnectionFailureException.class})
+//    @ResponseBody
+//    public String redisConnectionException(Exception e) {
+//        return "Redis session server connection failed: "+e.getMessage();
+//    }
 }
