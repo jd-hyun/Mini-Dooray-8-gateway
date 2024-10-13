@@ -27,31 +27,19 @@ public class SecurityConfig {
                     .requestMatchers("/login").permitAll()
                     .requestMatchers("/register").permitAll()
                     .anyRequest().authenticated();
-//            authorizeRequests.requestMatchers("/admin/**").hasRole("ADMIN")
-//                    .requestMatchers("/private-project/**").hasAnyAuthority("ROLE_MEMBER")
-//                    .requestMatchers("/public-project/**").permitAll()
-//                    .requestMatchers("/google-project/**").hasAnyAuthority("ROLE_GOOGLE")
-//                    .requestMatchers("/auth/login").permitAll()
-//                    .requestMatchers("/login/process").permitAll()
-//                    .anyRequest().authenticated();
         });
-//        http.exceptionHandling(handle -> handle.accessDeniedPage("/403"));
 
         // login
         http.formLogin(formLogin -> {
-//            formLogin.disable()
             formLogin.loginPage("/login")
                     .usernameParameter("id")
                     .passwordParameter("password")
                     .loginProcessingUrl("/login/process")
-//                    .successHandler(new LoginSuccessHandler(redisTemplate))
-//                    .failureHandler(new LoginFailureHandler())
             ;
         });
 
         http.logout(logout -> {
             logout.logoutUrl("/logout");
-//            logout.logoutSuccessHandler(new CustomLogoutSuccessHandler(redisTemplate));
         });
         return http.build();
     }
