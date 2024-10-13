@@ -7,6 +7,8 @@ import com.nhnacademy.minidooray.model.rest.project.ProjectUpdateRequest;
 import com.nhnacademy.minidooray.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +24,12 @@ public class ProjectController {
 
     // TODO: Project Service로 리팩토링하기
     @GetMapping
-    public String getProjectList(/* UserDetails User */ Model model /*, @RequestParam String memberId*/) {
+    public String getProjectList(@AuthenticationPrincipal UserDetails user, Model model /*, @RequestParam String memberId*/) {
         // TODO: MEMBER ID
+
+        log.trace("User: {}", user.getUsername());
         final String memberId = "123";
+
         List<ProjectSimpleDto> projectList = projectService.getProjectSimpleListByMemberId(memberId);
 
         model.addAttribute("projectList", projectList);
@@ -32,11 +37,11 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}")
-    public String getProjectPage(/*UserDetails user, */@PathVariable long projectId, Model model) {
+    public String getProjectPage(@AuthenticationPrincipal UserDetails user, @PathVariable long projectId, Model model) {
         ProjectDetailDto detail = projectService.getProjectDetailById(projectId);
 //        String username = user.getUsername();
 //        boolean isMember = detail.getMembers().stream().anyMatch(member -> member.getId().equals(username));
-
+//
 //        if (detail.getAuthorId().equals(username) || isMember) {
         if (true) {
             model.addAttribute("project", detail);
@@ -55,9 +60,9 @@ public class ProjectController {
     }
 
     @PostMapping("/modify")
-    public String modifyProject(@RequestParam("pid") long projectId, @RequestBody ProjectUpdateRequest updateRequest) {
+    public String modifyProject(@RequestParam("pid") long projectId, ProjectUpdateRequest updateRequest) {
         projectService.sendUpdateRequest(projectId, updateRequest);
-        return "redirect:/project/"+projectId;
+        return "redirect:/project";
     }
 
     @GetMapping("/delete")
@@ -65,4 +70,6 @@ public class ProjectController {
         projectService.sendDeleteRequest(projectId);
         return "redirect:/project";
     }
+
+//    @GetMapping("/")
 }

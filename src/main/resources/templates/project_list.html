@@ -5,9 +5,22 @@
     <title>Mini Dooray</title>
     <th:block th:replace="~{components/commons :: bootstrap}" />
     <style>
-        table#projectTable > tbody > tr {
+        table#projectTable > tbody > tr .project-title {
             font-size: 18px;
             cursor: pointer;
+        }
+        /*table#projectTable > tbody > tr {*/
+        /*    font-size: 18px;*/
+        /*    cursor: pointer;*/
+        /*}*/
+        a.delete-button {
+            padding: 3px;
+            border: 1px solid gray;
+            text-decoration: none;
+        }
+        a.delete-button:hover{
+            background-color: gray;
+            color: white;
         }
     </style>
     <script th:inline="javascript">
@@ -24,7 +37,7 @@
 <!--        <div class="d-flex justify-content-end">-->
 <!--            <button type="button" class="btn btn-primary" onclick="activateForm()"> + </button>-->
 <!--        </div>-->
-        <form id="addForm" style="display: none;" action="/project/create" method="post" class="d-flex flex-row">
+        <form id="addForm" style="display: none;" action="/project/create" method="post" class="d-flex flex-row mb-3">
             <input th:value="${#authorization.getAuthentication().getName()}" name="authorId" hidden />
             <input class="form-control form-control-sm flex-grow-1 me-3" name="title" placeholder="title" />
             <button style="width: 80px;" class="btn btn-primary">추가</button>
@@ -33,18 +46,53 @@
     <div>
         <table class="table table-hover" id="projectTable">
             <thead>
-            <tr>
+            <tr class="align-middle">
                 <th scope="col">프로젝트</th>
                 <th scope="col">개설자</th>
                 <th scope="col">상태</th>
+                <th style="width: 8rem;" scope="col">수정</th>
             </tr>
             </thead>
-            <tbody th:each="project: ${projectList}">
-            <tr th:data-active="${project.state}" th:data-project-id="${project.id}">
-                <td th:text="${project.title}"></td>
+            <tbody>
+            <th:block th:each="project: ${projectList}">
+            <tr class="align-middle project-row" th:data-active="${project.state}" th:data-project-id="${project.id}">
+                <td class="project-title" th:text="${project.title}"></td>
                 <td th:text="${project.authorId}"></td>
                 <td th:text="${project.state.view}"></td>
+                <td>
+                    <th:block th:if="${project.authorId == #authorization.authentication.name}">
+                        <button th:id="|edit-form-button-${project.id}|" class="delete-button">수정</button>
+                        <a th:href="@{/project/delete(pid=${project.id})}" class="delete-button">삭제</a>
+                    </th:block>
+                </td>
             </tr>
+            <tr th:id="|edit-form-${project.id}|" style="display: none;">
+                <td colspan="4">
+                    <div>
+                        <form method="post" th:action="@{/project/modify(pid=${project.id})}" class="d-flex">
+                            <input class="form-control flex-grow-1 me-2" name="title" />
+                            <select class="me-3" name="state">
+                                <option value="ACTIVE">활성</option>
+                                <option value="SLEEP">휴면</option>
+                            </select>
+                            <button style="width: 15%;" class="btn btn-warning">수정하기</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <th:block th:if="${project.authorId == #authorization.authentication.name}">
+                <script th:inline="javascript">
+                    var editButton= document.querySelector('button#edit-form-button-[[${project.id}]]');
+                    editButton.addEventListener('click', () => {
+                        const editForm = document.querySelector('tr#edit-form-[[${project.id}]]');
+                        if (editForm.style.display === 'none')
+                            editForm.style.display = 'table-row';
+                        else
+                            editForm.style.display = 'none';
+                    });
+                </script>
+            </th:block>
+            </th:block>
             </tbody>
         </table>
 <!--        <div th:each="project : ${projectList}">-->
@@ -53,7 +101,7 @@
     </div>
 </div>
 <script>
-    const tableRows = document.querySelectorAll('table#projectTable > tbody > tr');
+    const tableRows = document.querySelectorAll('table#projectTable > tbody > tr.project-row');
     tableRows.forEach(row => {
         switch(row.getAttribute('data-active')) {
             case 'ACTIVE': row.classList.add('table-success'); break;
@@ -61,7 +109,11 @@
             case 'TERMINATED': row.classList.add('table-secondary'); break;
         }
         const projectId = row.getAttribute('data-project-id');
-        row.addEventListener('click', () => {
+        // row.addEventListener('click', () => {
+        //     window.location.href=`/project/${projectId}`;
+        // });
+        const tableTitleDOM = row.querySelector('.project-title');
+        tableTitleDOM.addEventListener('click', () => {
             window.location.href=`/project/${projectId}`;
         });
     });

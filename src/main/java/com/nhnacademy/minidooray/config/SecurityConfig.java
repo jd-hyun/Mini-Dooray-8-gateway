@@ -23,7 +23,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomUserDetailService userDetailService) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(authorizeRequests -> {
-            authorizeRequests.anyRequest().permitAll();
+            authorizeRequests
+                    .requestMatchers("/login").permitAll()
+                    .requestMatchers("/register").permitAll()
+                    .anyRequest().authenticated();
 //            authorizeRequests.requestMatchers("/admin/**").hasRole("ADMIN")
 //                    .requestMatchers("/private-project/**").hasAnyAuthority("ROLE_MEMBER")
 //                    .requestMatchers("/public-project/**").permitAll()
@@ -45,9 +48,11 @@ public class SecurityConfig {
 //                    .failureHandler(new LoginFailureHandler())
             ;
         });
-//        http.logout(logout -> {
+
+        http.logout(logout -> {
+            logout.logoutUrl("/logout");
 //            logout.logoutSuccessHandler(new CustomLogoutSuccessHandler(redisTemplate));
-//        });
+        });
         return http.build();
     }
 

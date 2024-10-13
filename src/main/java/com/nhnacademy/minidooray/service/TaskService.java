@@ -45,4 +45,16 @@ public class TaskService {
                 HttpStatus.class
         );
     }
+    public void sendDeleteRequest(long projectId, long taskId) {
+        UriComponentsBuilder builder = builderProvider.getIfAvailable();
+        UriComponents components = builder.path("/projects/{projectId}/tasks/{taskId}")
+                .encode().buildAndExpand(projectId, taskId);
+
+        ResponseEntity<HttpStatus> resp = RestUtil.doRest(
+                components.toUriString(),
+                HttpMethod.DELETE,
+                null,
+                HttpStatus.class
+        );
+    }
 }

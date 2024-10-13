@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 >
 <head>
     <meta charset="UTF-8">
@@ -77,11 +78,14 @@
         </ul>
         <h4 class="flex-grow-1" style="text-align: center; color: white;" th:text="${title}"></h4>
         <div class="ms-3">
-<!--            <th:block sec:authorization="${isAuthorized()}">-->
+            <th:block sec:authorize="!isAuthenticated()">
                 <a href="/login" class="btn btn-warning">로그인</a>
+            </th:block>
+            <th:block sec:authorize="isAuthenticated()">
+                <a href="/logout" class="btn btn-danger">로그아웃</a>
+            </th:block>
 <!--            </th:block>-->
 <!--            <th:block sec:authorization="${!isAuthorized()}">-->
-<!--                <a href="/login" class="btn btn-outline-danger">로그아웃</a>-->
 <!--            </th:block>-->
         </div>
     </div>
@@ -118,6 +122,10 @@ Project {
     <div class="mb-2"><h3 class="m-0" th:text="${task.title}"></h3></div>
     <div th:text="${task.milestone.title}"></div>
     <div>[[${task.milestone.startDate}]] ~ [[${task.milestone.endDate}]]</div>
+</div>
+
+<div>
+
 </div>
 </body>
 </html>

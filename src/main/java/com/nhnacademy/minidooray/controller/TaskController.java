@@ -55,4 +55,10 @@ public class TaskController {
         taskService.sendCreateRequest(projectId, createRequest);
         return "redirect:/project/"+projectId;
     }
+
+    @GetMapping("/delete")
+    public String deleteTask(@RequestParam("pid") long projectId, @RequestParam("tid") long taskId) {
+        taskService.sendDeleteRequest(projectId, taskId);
+        return "redirect:/project/"+projectId;
+    }
 }

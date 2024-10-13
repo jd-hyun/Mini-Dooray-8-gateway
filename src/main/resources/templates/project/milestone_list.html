@@ -27,11 +27,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="milestone : ${milestones}">
+        <tr class="align-middle" th:each="milestone : ${milestones}">
             <td th:text="${milestone.title}"></td>
             <td th:text="${#temporals.format(milestone.startDate, 'yyyy-MM-dd')}"></td>
             <td th:text="${#temporals.format(milestone.endDate, 'yyyy-MM-dd')}"></td>
-            <td><a th:href="@{/milestone/delete(mid=${milestone.id})}" class="btn btn-outline-warning">삭제</a></td>
+            <td><a th:href="@{/project/{pid}/milestone/delete(pid=${project.id}, mid=${milestone.id})}" class="btn btn-outline-warning">삭제</a></td>
         </tr>
         </tbody>
     </table>
