@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Member</title>
+    <th:block th:replace="~{components/commons :: bootstrap}" />
+
+</head>
+<body>
+<th:block th:replace="~{components/commons :: header(${project.title})}" />
+<div class="container">
+    <div class="d-flex flex-row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">멤버</th>
+                <th style="width:20%;" scope="col">수정</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="member: ${members}">
+                <td th:text="${member.id}"></td>
+                <td><a th:if="${project.authorId == #authorization.authentication.name}" th:href="@{/project/{pid}/tag/delete(pid=${project.id}, memberId=${member.id})}" class="btn btn-danger">삭제</a></td>
+            </tr>
+            </tbody>
+        </table>
+        <div th:if="${project.authorId == #authorization.authentication.name}" class="d-flex flex-column">
+            <form method="get" class="d-flex flex-row mb-2">
+                <input name="search" class="form-control form-control-sm me-2"/>
+                <button type="submit" class="btn btn-outline-success">검색</button>
+            </form>
+            <div>
+                <div style="border-bottom: 1px solid gray;" th:each="member: ${searched}">
+                    <a th:href="@{/project/{pid}/member/create(memberId=${member.id})}" th:text="${member.id}"></a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+<th:block th:replace="~{components/commons :: bootstrap_script}" />
+</html>

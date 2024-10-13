@@ -1,15 +1,13 @@
 package com.nhnacademy.minidooray.controller;
 
 import com.nhnacademy.minidooray.model.ProjectDetailDto;
+import com.nhnacademy.minidooray.model.rest.tag.TagCreateRequest;
 import com.nhnacademy.minidooray.model.rest.tag.TagResponse;
 import com.nhnacademy.minidooray.service.ProjectService;
 import com.nhnacademy.minidooray.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -31,6 +29,12 @@ public class TagController {
         mv.addObject("tags", tags);
         mv.addObject("project", detail);
         return mv;
+    }
+
+    @PostMapping
+    public String createTag(@PathVariable long projectId, TagCreateRequest createRequest) {
+        tagService.sendCreateRequest(projectId, createRequest);
+        return "redirect:/project/"+projectId+"/tag";
     }
 
     @GetMapping("/delete")

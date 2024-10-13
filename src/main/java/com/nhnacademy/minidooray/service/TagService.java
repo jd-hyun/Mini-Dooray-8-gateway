@@ -3,7 +3,6 @@ package com.nhnacademy.minidooray.service;
 import com.nhnacademy.minidooray.model.rest.tag.TagCreateRequest;
 import com.nhnacademy.minidooray.model.rest.tag.TagResponse;
 import com.nhnacademy.minidooray.util.RestUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

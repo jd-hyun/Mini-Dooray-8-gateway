@@ -5,7 +5,6 @@ import com.nhnacademy.minidooray.model.ProjectSimpleDto;
 import com.nhnacademy.minidooray.model.rest.project.ProjectCreateRequest;
 import com.nhnacademy.minidooray.model.rest.project.ProjectUpdateRequest;
 import com.nhnacademy.minidooray.service.ProjectService;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +63,7 @@ public class ProjectController {
         ProjectDetailDto detail = projectService.getProjectDetailById(projectId);
 
         UriComponents fetchMemberList = accountBuilderProvider.getIfAvailable().path("/accounts?like=").build();
-//        UriComponents fetchAddMember = taskBuilderProvider.getIfAvailable().path("/project/{projectId}/members?").
+        UriComponents fetchAddMember = taskBuilderProvider.getIfAvailable().path("/projects/{projectId}/members?memberId=").buildAndExpand(projectId);
 
 //        String username = user.getUsername();
 //        boolean isMember = detail.getMembers().stream().anyMatch(member -> member.getId().equals(username));
@@ -73,6 +72,7 @@ public class ProjectController {
         if (true) {
             model.addAttribute("project", detail);
             model.addAttribute("memberRequestPath", fetchMemberList.toUriString());
+            model.addAttribute("memberAddPath", fetchAddMember.toUriString());
 //            model.addAllAttributes(detail.toModelMap());
             return "project/project_detail";
         } else {

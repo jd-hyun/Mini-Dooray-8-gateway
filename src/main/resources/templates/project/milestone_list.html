@@ -11,10 +11,10 @@
     <h3 class="display-4 mb-3">Milestone List</h3>
     <hr />
     <form class="d-flex mb-3" th:action="@{/project/{pid}/milestone(pid=${project.id})}" method="post">
-        <input name="title" class="form-control form-control-sm me-2" />
-        <input name="startDate" type="date" th:value="${#temporals.createToday()}" class="me-2"/>
+        <input name="title" class="form-control form-control-sm me-2" required />
+        <input name="startDate" type="date" th:value="${#temporals.createToday()}" class="me-2" required/>
         <span> ~ </span>
-        <input name="endDate" type="date" class="ms-2 me-2"/>
+        <input name="endDate" type="date" class="ms-2 me-2" required/>
         <button class="btn btn-primary ms-auto">+</button>
     </form>
     <table class="table">

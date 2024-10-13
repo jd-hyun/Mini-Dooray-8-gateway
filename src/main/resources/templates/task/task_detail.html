@@ -51,8 +51,9 @@
 
 <!--        댓글 등록 폼-->
         <form class="d-flex flex-column" th:action="@{/comment/create(pid=${task.projectId}, tid=${task.id})}" method="post">
-            <input name="taskId" th:value="${task.id}" hidden />
-            <textarea class="mb-2 p-2" style="width: 100%; height: 80px;" placeholder="Comment here..."></textarea>
+<!--            <input name="taskId" th:value="${task.id}" hidden />-->
+            <input name="authorId" th:value="${#authorization.authentication.name}" hidden="" />
+            <textarea name="content" class="mb-2 p-2" style="width: 100%; height: 80px;" placeholder="Comment here..."></textarea>
             <button type="submit" class="ms-auto btn btn-primary">댓글 등록</button>
         </form>
     </div>

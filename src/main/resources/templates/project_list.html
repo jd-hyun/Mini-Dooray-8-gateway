@@ -70,7 +70,7 @@
                 <td colspan="4">
                     <div>
                         <form method="post" th:action="@{/project/modify(pid=${project.id})}" class="d-flex">
-                            <input class="form-control flex-grow-1 me-2" name="title" />
+                            <input th:value="${project.title}" class="form-control flex-grow-1 me-2" name="title" />
                             <select class="me-3" name="state">
                                 <option value="ACTIVE">활성</option>
                                 <option value="SLEEP">휴면</option>

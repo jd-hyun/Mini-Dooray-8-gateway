@@ -41,23 +41,21 @@ public class MilestoneService {
         return resp.getBody();
     }
 
-    public Milestone sendCreateRequest(long projectId, MilestoneCreateRequest request) {
+    public void sendCreateRequest(long projectId, MilestoneCreateRequest request) {
         UriComponents components = builderProvider.getIfAvailable()
                 .path("/projects/{projectId}/milestones").encode()
                 .buildAndExpand(projectId);
 
-        ResponseEntity<Milestone> resp = RestUtil.doRest(
+        ResponseEntity<HttpStatus> resp = RestUtil.doRest(
                 components.toUriString(),
                 HttpMethod.POST,
                 request,
-                Milestone.class
+                HttpStatus.class
         );
 
         if (!resp.getStatusCode().is2xxSuccessful()) {
             throw new CreationFailedException("Milestone create failed");
         }
-
-        return resp.getBody();
     }
 
     public void sendDeleteRequest(long projectId, long milestoneId) {

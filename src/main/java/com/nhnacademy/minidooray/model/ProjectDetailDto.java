@@ -1,8 +1,11 @@
 package com.nhnacademy.minidooray.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,8 +14,10 @@ import java.util.Map;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 public class ProjectDetailDto {
     private long id;
+
     private String title;
     private List<Member> members;
 
@@ -21,13 +26,5 @@ public class ProjectDetailDto {
     private List<Task> tasks;
     private State state;
 
-    public Map<String, Object> toModelMap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("title", title);
-        map.put("members", members);
-        map.put("author", authorId);
-        map.put("tasks", tasks);
-        map.put("state", state);
-        return map;
-    }
+
 }

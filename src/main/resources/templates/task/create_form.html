@@ -11,15 +11,23 @@
     <div>
         <h3 class="display-4 mb-3">Create Task</h3>
         <form method="post" class="d-flex flex-column" th:action="@{/task/create(pid=${project.id})}">
-            <input class="form-control form-control-sm flex-grow-1 me-3 mb-3" name="title" placeholder="Title Here..."/>
-            <textarea class="form-control w-100 p-2 mb-3" name="contents" placeholder="Contents here..." rows="10"></textarea>
-            <select class="form-select form-select-lg mb-3" name="milestoneId">
+            <input class="form-control form-control-sm flex-grow-1 me-3 mb-3" name="title" placeholder="Title Here..." required/>
+            <textarea class="form-control w-100 p-2 mb-3" name="contents" placeholder="Contents here..." rows="10" required></textarea>
+            <label for="select-milestone" class="form-label">Milestone</label>
+            <select id="select-milestone" class="form-select form-select-lg mb-3" name="milestoneId" required>
                 <th:block th:each="milestone: ${milestones}">
                     <option th:value="${milestone.id}" th:text="${milestone.title}"></option>
                 </th:block>
             </select>
-            <button type="submit" class="btn btn-primary ms-auto">할일 생성</button>
+            <button onclick="milestoneCheck()" type="submit" class="btn btn-primary ms-auto">할일 생성</button>
+            <script>
+                const milestoneCheck = () => {
+                    const errorMessage = document.querySelector('#milestone-error');
+                    errorMessage.style.display = 'block';
+                }
+            </script>
         </form>
+        <div id="milestone-error" style="display:none; color:red;">마일스톤이 없다면 먼저 마일스톤을 추가해주세요</div>
     </div>
 </div>
 </body>

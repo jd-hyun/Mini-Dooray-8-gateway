@@ -1,5 +1,7 @@
 package com.nhnacademy.minidooray.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.minidooray.exception.CreationFailedException;
 import com.nhnacademy.minidooray.exception.EntityNotExistsException;
 import com.nhnacademy.minidooray.model.ProjectDetailDto;
@@ -7,6 +9,7 @@ import com.nhnacademy.minidooray.model.ProjectSimpleDto;
 import com.nhnacademy.minidooray.model.rest.project.ProjectCreateRequest;
 import com.nhnacademy.minidooray.model.rest.project.ProjectUpdateRequest;
 import com.nhnacademy.minidooray.util.RestUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,6 +23,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class ProjectService {
     @Qualifier("taskRequestBuilder")
@@ -54,6 +58,14 @@ public class ProjectService {
                 null,
                 ProjectDetailDto.class
         );
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        log.trace("Project Detail Response: {}", resp.getBody());
+//        try {
+//            ProjectDetailDto detail = objectMapper.readValue(resp.getBody(), ProjectDetailDto.class);
+//            return detail;
+//        }catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
 
         if (!resp.getStatusCode().is2xxSuccessful()) {
             throw new EntityNotExistsException("That project does not exist.");
