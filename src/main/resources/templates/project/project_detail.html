@@ -12,6 +12,15 @@
         li.task-card-li:hover {
             background-color: #ebebeb;
         }
+        #memberAdditionForm {
+            display: none;
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background-color: rgba(140,140,141,0.61);
+        }
     </style>
 </head>
 <body>
@@ -23,7 +32,9 @@
 <!--                <a href="#" class="list-group-item list-group-item-action"></a>-->
                 <a th:href="@{/project/{pid}/milestone(pid=${project.id})}" class="list-group-item list-group-item-action">마일스톤 관리</a>
                 <a th:href="@{/task/create(pid=${project.id})}" class="list-group-item list-group-item-action" >할일 추가</a>
-                <a href="#" class="list-group-item list-group-item-action">멤버 추가(공사중)</a>
+                <button onclick="memberFormActivate()" class="list-group-item list-group-item-action">멤버 추가(공사중)</button>
+<!--                <a href="#" class="list-group-item list-group-item-action">멤버 추가(공사중)</a>-->
+
             </div>
             <div class="d-flex flex-column">
                 <th:block th:each="member : ${project.members}">
@@ -44,6 +55,60 @@
         </div>
     </div>
 </div>
+<div id="memberAdditionForm" >
+    <div class="d-flex h-100 w-100">
+        <div class="mx-auto my-auto d-flex flex-column p-3" style="background-color: palegoldenrod; width: 400px; height: 600px;">
+            <div class="d-flex flex-row" id="searchMemberForm">
+                <input class="form-control flex-grow-1 mb-3" />
+                <button onclick="searchHandler()">검색</button>
+            </div>
+            <div style="background-color: white;" id="memberLists" class="flex-grow-1">
+            </div>
+            <script th:inline="javascript">
+                const inputForm = document.querySelector('#searchMemberForm input');
+                const memberListDOM = document.querySelector('#memberLists');
+                const searchHandler = () => {
+                    fetch([[${memberRequestPath}]] + inputForm.value)
+                        .then(response => response.json())
+                        .then(obj => {
+                            console.log(JSON.stringify(obj, null, '\t'));
+                            const memberCardTemplate = document.createElement('div');
+                            const memberCardTitleTemplate = document.createElement('div');
+                            const memberCardEmailTemplate = document.createElement('div');
+                            memberCardTemplate.className = 'd-flex member-card py-2 px-4 flex-column';
+                            memberCardTemplate.style.cursor = 'pointer';
+                            memberCardTitleTemplate.className='mb-2';
+
+                            obj.forEach((member) => {
+                                const copyTitleDOM = memberCardTitleTemplate.cloneNode(true);
+                                copyTitleDOM.innerHTML = member.id;
+
+                                const copyEmailDOM = memberCardEmailTemplate.cloneNode(true);
+                                copyEmailDOM.innerHTML = member.email;
+
+                                const copyMemberCardDOM = memberCardTemplate.cloneNode(true);
+                                copyMemberCardDOM.appendChild(copyTitleDOM);
+                                copyMemberCardDOM.appendChild(copyEmailDOM);
+
+                                copyMemberCardDOM.addEventListener('click', () => {
+                                    alert('멤버 추가 미구현');
+                                    window.location.href='/project/' + [[${project.id}]];
+                                })
+
+                                memberListDOM.appendChild(copyMemberCardDOM);
+                            })
+                        });
+                    };
+            </script>
+        </div>
+    </div>
+</div>
 </body>
+<script>
+    const memberAdditionForm = document.querySelector('div#memberAdditionForm');
+    const memberFormActivate = () => {
+        memberAdditionForm.style.display = 'block';
+    }
+</script>
 <th:block th:replace="~{components/commons :: bootstrap_script}" />
 </html>
