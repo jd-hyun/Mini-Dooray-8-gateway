@@ -31,6 +31,7 @@
             <div class="list-group mb-2">
 <!--                <a href="#" class="list-group-item list-group-item-action"></a>-->
                 <a th:href="@{/project/{pid}/milestone(pid=${project.id})}" class="list-group-item list-group-item-action">마일스톤 관리</a>
+                <a th:href="@{/project/{pid}/tag(pid=${project.id})}" class="list-group-item list-group-item-action">태그 관리(공사중)</a>
                 <a th:href="@{/task/create(pid=${project.id})}" class="list-group-item list-group-item-action" >할일 추가</a>
                 <button onclick="memberFormActivate()" class="list-group-item list-group-item-action">멤버 추가(공사중)</button>
 <!--                <a href="#" class="list-group-item list-group-item-action">멤버 추가(공사중)</a>-->

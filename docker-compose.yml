@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  account:
+    container_name: account
+    build:
+      context: ./Mini-Dooray-8-account
+    image: flowerfulfort/dooray-account
+    ports:
+      - 8081:8081
+
+  task:
+    container_name: task
+    build:
+      context: ./Mini-Dooray-8-task
+    image: flowerfulfort/dooray-task
+    ports:
+    - 8082:8082
+
+  gateway:
+    container_name: gateway
+    build:
+      context: .
+    image: flowerfulfort/dooray-gateway
+    ports:
+      - 8080:8080
+    depends_on:
+      - account
+      - task
+      - redis
+
+  redis:
+    container_name: redis-session
+    image: redis
+    ports:
+      - 6379:6379

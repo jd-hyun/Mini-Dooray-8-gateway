@@ -22,7 +22,7 @@
 <!--        태스트 타이틀-->
         <div class="d-flex flex-row align-items-center">
             <div class="display-4 flex-grow-1" th:text="${task.title}"></div>
-            <a th:href="@{/task/delete(pid=${project.id}, tid=${task.id})}" class="btn btn-outline-danger" >삭제</a>
+            <a th:if="${project.authorId == #authorization.authentication.name}" th:href="@{/task/delete(pid=${project.id}, tid=${task.id})}" class="btn btn-outline-danger" >삭제</a>
 
         </div>
 <!--        태스크에 할당된 마일스톤-->
@@ -38,12 +38,14 @@
 <!--        태스트 댓글-->
         <div class="mb-2" th:each="comment: ${task.comments}">
             <div style="border-bottom: 1px solid black;">
-                <div th:text="|작성자: ${comment.authorId}|"></div>
-                <div>
-                    <div th:text="|작성 일시: ${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm:ss')}|"></div>
-                    <a th:href="@{/comment/delete(pid=${task.projectId}, tid=${task.id}, cid=${comment.id})}" class="btn btn-outline-danger">삭제</a>
+                <div class="d-flex flex-row my-1">
+                    <div class="flex-grow-1">
+                        <div th:text="|작성자: ${comment.authorId}|"></div>
+                        <div th:text="|작성 일시: ${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm:ss')}|"></div>
+                    </div>
+                    <a th:if="${comment.authorId == #authorization.authentication.name}" th:href="@{/comment/delete(pid=${task.projectId}, tid=${task.id}, cid=${comment.id})}" class="btn btn-outline-danger">삭제</a>
                 </div>
-                <div th:text="${comment.content}"></div>
+                <div class="my-3" th:text="${comment.content}"></div>
             </div>
         </div>
 

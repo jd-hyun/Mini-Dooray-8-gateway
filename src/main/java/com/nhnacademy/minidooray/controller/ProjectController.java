@@ -5,6 +5,7 @@ import com.nhnacademy.minidooray.model.ProjectSimpleDto;
 import com.nhnacademy.minidooray.model.rest.project.ProjectCreateRequest;
 import com.nhnacademy.minidooray.model.rest.project.ProjectUpdateRequest;
 import com.nhnacademy.minidooray.service.ProjectService;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +39,19 @@ public class ProjectController {
     @Autowired
     private ObjectProvider<UriComponentsBuilder> taskBuilderProvider;
 
-    // TODO: Project Service로 리팩토링하기
+//    예비용 코드
+//    @ModelAttribute("pk")
+//    public String injectPk(HttpSession session) {
+//        return (String) session.getAttribute("pk");
+//    }
+
     @GetMapping
     public String getProjectList(@AuthenticationPrincipal UserDetails user, Model model /*, @RequestParam String memberId*/) {
         // TODO: MEMBER ID
 
         log.trace("User: {}", user.getUsername());
-        final String memberId = "123";
+//        final String memberId = "123";
+        final String memberId = user.getUsername();
 
         List<ProjectSimpleDto> projectList = projectService.getProjectSimpleListByMemberId(memberId);
 
@@ -92,5 +99,4 @@ public class ProjectController {
         return "redirect:/project";
     }
 
-//    @GetMapping("/")
 }
