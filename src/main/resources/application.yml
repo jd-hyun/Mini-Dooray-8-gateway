@@ -5,6 +5,13 @@ spring:
 server:
   port: 8080
 
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://admin:1234@localhost:8761/eureka
+
 dooray:
   account:
     host: localhost
